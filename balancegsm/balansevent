@@ -1,0 +1,23 @@
+#!/bin/bash
+# Параметры подключения к базе
+dbname=asteriskcdrdb
+tbname=gsmbalans
+dbuser=gsmbalans
+dbpass=gSmBlNs
+# Порог срабатывания при значении меньше которого будет отправлено уведомление 
+porog=100
+# Адрес получателя уведомления (несколько адресов через запятую без пробелов
+maddr=user@mail.com
+ 
+# Создаем сводный отчет по низким балансам
+ 
+zapr="select port as 'Модем',balans as 'Баланс',time as 'Дата Время' \
+ from (select * from (select max(time) as last_date,port as prt \
+ from ${tbname} group by port) as tbl1 \
+ JOIN ${tbname} where tbl1.last_date=${tbname}.time and tbl1.prt=${tbname}.port) as itog where port<>'' and balans<'${porog}' order by port;"
+mysql -u$dbuser -p$dbpass -D $dbname -e "${zapr}" | column -t > emltmp
+ 
+nbal=`cat emltmp | wc -l`
+if [ 1 -le ${nbal} ]
+   then cat emltmp | mail -s 'Small Balans Events' $maddr
+fi

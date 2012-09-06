@@ -1,0 +1,2 @@
+echo "*/30 * * * * root /etc/balans > /tmp/bal.tmp" >> /etc/crontab
+echo "0 6 * * * root /etc/balansevent > /dev/null" >> /etc/crontab
