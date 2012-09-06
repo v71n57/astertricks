@@ -1,1 +1,1 @@
-1 2 3
+Tips and tricks for asterisk :)
