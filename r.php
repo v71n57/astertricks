@@ -8,13 +8,13 @@ $mysql_table = 'codes';
 if(isset($_GET['number'])) {
         $number=$_GET['number'];
 } else {
-        die("Номера нема");
+        die("Нет номера");
 }
 
 $mysql = new mysqli($config['mysql_host'],$config['mysql_user'],$config['mysql_password'],$config['mysql_base']);
 $mysql->query("SET NAMES 'utf8'");
 
-//$number = '+7(952)44-044-17';
+//$number = '+7(952)11-111-11';
 
 $number = preg_replace('/[^0-9]+/','',$number);
 
