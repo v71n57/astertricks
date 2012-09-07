@@ -1,0 +1,13 @@
+#!/bin/bash
+#echo `tty` > /tmp/debug_tty && chmod 666 `tty` && chmod 644 /tmp/debug_tty && sleep 12341234; rm -f /tmp/debug_tty
+ulimit -t 30
+if [ -f /tmp/debug_tty ]
+then
+	TTY=`cat /tmp/debug_tty`
+	export PERLDB_OPTS="TTY=$TTY ReadLine=0"
+	DEBUG=5 perl -d /usr/share/asterisk/agi-bin/sqlmenu.agi $* 2> $TTY
+	exit $?
+else
+	perl /usr/share/asterisk/agi-bin/sqlmenu.agi $* 2> /tmp/foo-stderr-$$.log
+	exit $?
+fi
